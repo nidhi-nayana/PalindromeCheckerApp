@@ -2,91 +2,35 @@
  *
  * MAIN CLASS - PalindromeCheckerApp
  *
- * Use Case 8: Linked List Based Palindrome Checker
+ * Use Case 9: Recursive Palindrome Checker
  *
  * Description:
- * This class validates a palindrome using a
- * Singly Linked List.
+ * This class validates a palindrome using recursion.
  *
- * Steps:
- * - Convert string into linked list
- * - Find middle using Fast & Slow pointer
- * - Reverse second half in-place
- * - Compare both halves
+ * Characters are compared from the outer positions
+ * moving inward using recursive calls.
  *
- * This demonstrates efficient memory usage
- * and pointer manipulation.
+ * The recursion stops when:
+ * - All characters are matched, or
+ * - A mismatch is found.
+ *
+ * This use case demonstrates divide-and-conquer
+ * logic using method recursion.
  *
  * @author Nidhi
- * @version 8.0
+ * @version 9.0
  */
 public class PalindromeCheckerApp {
-/**
- * Node class for Singly Linked List
- */
-static class Node {
-    char data;
-    Node next;
-    Node(char data) {
-        this.data = data;
-        this.next = null;
-    }
-}
     /**
-     * Application entry point for UC8.
+     * Application entry point for UC9.
      *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
         // Define input string
-        String input = "level";
-        // Convert string to linked list
-        Node head = null;
-        Node tail = null;
-        for (char c : input.toCharArray()) {
-            Node newNode = new Node(c);
-            if (head == null) {
-                head = newNode;
-                tail = newNode;
-            } else {
-                tail.next = newNode;
-                tail = newNode;
-            }
-        }
-        // Edge case: empty or single character
-        if (head == null || head.next == null) {
-            System.out.println("Input String : " + input);
-            System.out.println("Result : The string is a Palindrome.");
-            return;
-        }
-        // Step 1: Find middle using Fast & Slow pointer
-        Node slow = head;
-        Node fast = head;
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-        // Step 2: Reverse second half
-        Node prev = null;
-        Node current = slow;
-        while (current != null) {
-            Node nextTemp = current.next;
-            current.next = prev;
-            prev = current;
-            current = nextTemp;
-        }
-        // Step 3: Compare first half and reversed second half
-        Node firstHalf = head;
-        Node secondHalf = prev;
-        boolean isPalindrome = true;
-        while (secondHalf != null) {
-            if (firstHalf.data != secondHalf.data) {
-                isPalindrome = false;
-                break;
-            }
-            firstHalf = firstHalf.next;
-            secondHalf = secondHalf.next;
-        }
+        String input = "madam";
+        // Call recursive method
+        boolean isPalindrome = checkPalindrome(input, 0, input.length() - 1);
         // Display result
         System.out.println("Input String : " + input);
         if (isPalindrome) {
@@ -94,5 +38,25 @@ static class Node {
         } else {
             System.out.println("Result : The string is NOT a Palindrome.");
         }
+    }
+    /**
+     * Recursively checks whether a string is palindrome.
+     *
+     * @param str Input string
+     * @param start Starting index
+     * @param end Ending index
+     * @return true if palindrome, otherwise false
+     */
+    private static boolean checkPalindrome(String str, int start, int end) {
+        // Base Condition 1: If start >= end, all characters matched
+        if (start >= end) {
+            return true;
+        }
+        // If characters do not match, stop recursion
+        if (str.charAt(start) != str.charAt(end)) {
+            return false;
+        }
+        // Recursive call moving inward
+        return checkPalindrome(str, start + 1, end - 1);
     }
 }
